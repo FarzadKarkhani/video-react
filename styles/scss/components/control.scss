@@ -12,17 +12,16 @@
   @include flex(none);
 
   &:before {
-    font-size: 1.8em;
-    line-height: 1.67;
+    opacity: 0.85;
+    font-size: 2em;
+    line-height: 1.4;
 
     @extend %video-react-icon-default;
   }
 
   // Replacement for focus outline
-  &:focus:before,
-  &:hover:before,
-  &:focus {
-    text-shadow: 0em 0em 1em rgba($video-react-primary-foreground-color, 1);
+  &:hover:before {
+    opacity: 1;
   }
 
 }

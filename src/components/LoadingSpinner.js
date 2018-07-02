@@ -18,7 +18,12 @@ export default function LoadingSpinner({ player, className }) {
         'video-react-loading-spinner',
         className
       )}
-    />
+    >
+      <div className="spinner-main">
+        <div className="spinner-big" />
+        <div className="spinner-small" />
+      </div>
+    </div>
   );
 }
 

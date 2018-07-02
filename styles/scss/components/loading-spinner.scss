@@ -1,40 +1,46 @@
-// loading-spinner css style
 .video-react .video-react-loading-spinner {
   display: none;
   position: absolute;
+  opacity: 1;
+  border: none;
+  width: 40px;
+  height: 40px;
   top: 50%;
   left: 50%;
-  margin: -25px 0 0 -25px;
-  opacity: 0.85;
-
-  // Need to fix centered page layouts
-  text-align: left;
-
-  border: 6px solid rgba($video-react-primary-background-color, $video-react-primary-background-transparency);
-  // border: 6px solid rgba(43, 51, 63, 0.5);
-
+  margin: -20px 0 0 -20px;
+  opacity: 0.8;
   box-sizing: border-box;
   background-clip: padding-box;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+}
+.video-react .video-react-loading-spinner .spinner-main {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 4px solid $video-react-primary-foreground-color;
+  border-radius: 50%;
+}
+.video-react .video-react-loading-spinner .spinner-big,
+.video-react .video-react-loading-spinner .spinner-small {
+  position: absolute;
+  overflow: hidden;
+  right: calc(50% - 2px);
+  top: calc(50% - 2px);
+  display: block;
+  width: 4px;
+  border-radius: 2px;
+  background: #fff;
+}
 
-  &:before,
-  &:after {
-    content: "";
-    position: absolute;
-    margin: -6px;
-    box-sizing: inherit;
-    width: inherit;
-    height: inherit;
-    border-radius: inherit;
-    opacity: 1;
-    border: inherit;
-    border-color: transparent;
-    border-top-color: white;
-    -webkit-animation: video-react-spinner-spin 1.1s cubic-bezier(0.6, 0.2, 0, 0.8) infinite, video-react-spinner-fade 1.1s linear infinite;
-    animation: video-react-spinner-spin 1.1s cubic-bezier(0.6, 0.2, 0, 0.8) infinite, video-react-spinner-fade 1.1s linear infinite;
-  }
+.video-react .video-react-loading-spinner .spinner-big {
+  height: 16px;
+  transform-origin: 2px 2px;
+  animation: rotate 0.75s infinite linear;
+}
+
+.video-react .video-react-loading-spinner .spinner-small {
+  height: 12px;
+  transform-origin: 2px 2px;
+  animation: rotate 5s infinite linear;
 }
 
 .video-react-seeking .video-react-loading-spinner,
@@ -42,64 +48,14 @@
   display: block;
 }
 
-.video-react-seeking .video-react-loading-spinner:before,
-.video-react-waiting .video-react-loading-spinner:before {
-  border-top-color: rgb(255,255,255);
+@keyframes rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@-webkit-keyframes rotate {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
 }
 
-.video-react-seeking .video-react-loading-spinner:after,
-.video-react-waiting .video-react-loading-spinner:after {
-  border-top-color: rgb(255,255,255);
-  -webkit-animation-delay: 0.44s;
-  animation-delay: 0.44s;
-}
-
-@keyframes video-react-spinner-spin {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@-webkit-keyframes video-react-spinner-spin {
-  100% {
-    -webkit-transform: rotate(360deg);
-  }
-}
-
-@keyframes video-react-spinner-fade {
-  0% {
-    border-top-color: $video-react-secondary-background-color;
-  }
-  20% {
-    border-top-color: $video-react-secondary-background-color;
-  }
-  35% {
-    border-top-color: white;
-  }
-  60% {
-    border-top-color: $video-react-secondary-background-color;
-  }
-  100% {
-    border-top-color: $video-react-secondary-background-color;
-  }
-}
-
-@-webkit-keyframes video-react-spinner-fade {
-  0% {
-    border-top-color: $video-react-secondary-background-color;
-  }
-  20% {
-    border-top-color: $video-react-secondary-background-color;
-  }
-  35% {
-    border-top-color: white;
-  }
-  60% {
-    border-top-color: $video-react-secondary-background-color;
-  }
-  100% {
-    border-top-color: $video-react-secondary-background-color;
-  }
-}
 
 

@@ -1,7 +1,7 @@
 .video-react {
   .video-react-big-play-button {
     font-size: 3em;
-    line-height: $video-react-big-play-button-height;
+    line-height: $video-react-big-play-button-line-height;
     height: $video-react-big-play-button-height;
     width: $video-react-big-play-button-width; // Firefox bug: For some reason without width the icon wouldn't show up. Switched to using width and removed padding.
     display: block;

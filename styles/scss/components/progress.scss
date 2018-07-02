@@ -79,14 +79,17 @@
 .video-react .video-react-mouse-display:after,
 .video-react .video-react-play-progress:after {
   visibility: hidden;
+  font-family: $video-react-text-font-family;
   pointer-events: none;
   position: absolute;
   top: -3.4em;
   right: -1.9em;
+  // line-height: 0.6em;
   font-size: 0.9em;
-  color: #000;
+  font-weight: 700;
+  color: $video-react-primary-background-color;
   content: attr(data-current-time);
-  padding: 6px 8px 8px 8px;
+  padding: 4px 6px 4px 6px;
   @include background-color-with-alpha(#fff, 0.8);
   @include border-radius(0.3em);
 }

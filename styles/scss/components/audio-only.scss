@@ -1,0 +1,11 @@
+.video-react .video-react-audio-only-control {
+  cursor: pointer;
+  @include flex(none);
+  @extend .video-react-icon;
+  @extend .video-react-icon-video-has;
+
+  &.video-react-icon-video-has {
+    @extend .video-react-icon-video-no;
+  }
+}
+

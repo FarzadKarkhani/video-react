@@ -30,7 +30,7 @@
     margin: 1.35em 0.45em;
 
     &.video-react-slider-horizontal {
-      width: 5em;
+      // width: 5em;
       height: 0.3em;
 
       .video-react-volume-level {
@@ -105,7 +105,7 @@
 
   .video-react-menu-button-popup.video-react-volume-menu-button-vertical .video-react-menu {
     left: 0.5em;
-    height: 8em;
+    height: 7em;
   }
   .video-react-menu-button-popup.video-react-volume-menu-button-horizontal .video-react-menu {
     left: -2em;
@@ -124,7 +124,7 @@
   .video-react-volume-menu-button-vertical:focus .video-react-menu-content,
   .video-react-volume-menu-button-vertical.video-react-slider-active .video-react-menu-content,
   .video-react-volume-menu-button-vertical .video-react-lock-showing .video-react-menu-content {
-    height: 8em;
+    height: 7em;
     width: 2.9em;
   }
 
@@ -133,7 +133,7 @@
   .video-react-volume-menu-button-horizontal .video-react-slider-active .video-react-menu-content,
   .video-react-volume-menu-button-horizontal .video-react-lock-showing .video-react-menu-content {
     height: 2.9em;
-    width: 8em;
+    width: 7em;
   }
 
   .video-react-volume-menu-button.video-react-menu-button-inline .video-react-menu-content {

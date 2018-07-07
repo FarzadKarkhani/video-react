@@ -8,8 +8,9 @@
   margin: 0;
   padding: 0;
   height: 100%;
-  width: 4em;
+  width: 3.6em;
   @include flex(none);
+  @include flex-row;
 
   &:before {
     opacity: 0.85;

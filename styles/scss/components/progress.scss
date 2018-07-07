@@ -3,6 +3,7 @@
   @include flex(auto);
   @include display-flex(center);
   min-width: 4em;
+  width: 100%;
 }
 
 .video-react-live .video-react-progress-control {

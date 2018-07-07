@@ -61,6 +61,7 @@
   "tonicExampleFilename": "tonic-example.js",
   "dependencies": {
     "classnames": "^2.2.3",
+    "hls.js": "^0.8.9",
     "lodash.throttle": "^4.1.1",
     "prop-types": "^15.5.8",
     "redux": "^4.0.0"
@@ -100,7 +101,6 @@
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "history": "^3.0.0",
-    "hls.js": "^0.10.1",
     "holderjs": "^2.9.3",
     "json-loader": "^0.5.4",
     "node-sass": "^4.5.3",

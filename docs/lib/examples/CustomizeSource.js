@@ -11,7 +11,7 @@ export default (props) => {
     <Player>
       <HLSSource
         isVideoChild
-        src="//d2zihajmogu5jn.cloudfront.net/bipbop-advanced/bipbop_16x9_variant.m3u8"
+        src="https://vod0.lahzecdn.com/hls/1530950233hQmFn3ef84ce82cb1d4bc7e32bb19a0e86176/master.m3u8"
       />
     </Player>
   );

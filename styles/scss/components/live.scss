@@ -6,6 +6,7 @@
 
 .video-react .video-react-live-label {
 	@include display-flex(center, center);
+  @include flex-row;
 	height: 18px;
   font-size: 10px;
   border-radius: 4px;

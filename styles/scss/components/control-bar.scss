@@ -22,6 +22,7 @@
 }
 
 .video-react-control-left,
+.video-react-control-time-display,
 .video-react-control-right {
   @include display-flex;
   @include flex-row;
@@ -29,7 +30,7 @@
 
 // Video has started playing
 .video-react-has-started .video-react-control-bar {
-  @include display-flex;
+  @include display-flex('', flex-end);
   @include flex-column;
   visibility: visible;
   opacity: 1;

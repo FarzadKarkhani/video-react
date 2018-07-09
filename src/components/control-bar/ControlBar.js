@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import ProgressControl from './ProgressControl';
 import PlayToggle from './PlayToggle';
 import AudioOnly from './AudioOnly';
+import Live from './Live';
 import ForwardControl from './ForwardControl';
 import ReplayControl from './ReplayControl';
 import FullscreenToggle from './FullscreenToggle';
@@ -19,23 +20,26 @@ import { mergeAndSortChildren } from '../../utils';
 const propTypes = {
   children: PropTypes.any,
   autoHide: PropTypes.bool,
-  disableDefaultControls: PropTypes.bool,
   className: PropTypes.string,
 };
-
 
 const defaultProps = {
   autoHide: true,
 };
-
 
 export default class ControlBar extends Component {
   constructor(props) {
     super(props);
   }
 
+  getChildren() {
+    const children = React.Children.toArray(this.props.children);
+    return mergeAndSortChildren([], children, this.props);
+  }
+
   render() {
-    const { autoHide, className, children } = this.props;
+    const { autoHide, className, isLive } = this.props;
+    const children = this.getChildren();
 
     return (
       <div
@@ -43,13 +47,15 @@ export default class ControlBar extends Component {
           'video-react-control-bar-auto-hide': autoHide
         }, className)}
       > 
-        <div className="video-react-control-bar-progress-bar">
-          <ProgressControl
-            {...this.props}
-            key="progress-control"
-            order={8}
-          />
-        </div>
+        {!isLive &&
+          <div className="video-react-control-bar-progress-bar">
+            <ProgressControl
+              {...this.props}
+              key="progress-control"
+              order={8}
+            />
+          </div>
+        }
         <div className="video-react-control-bar-buttons">
           <div className="video-react-control-left">
             <PlayToggle
@@ -62,23 +68,33 @@ export default class ControlBar extends Component {
               key="volume-menu-button"
               order={4}
             />
-            <CurrentTimeDisplay
-              {...this.props}
-              key="current-time-display"
-              order={5}
-            />
-            <TimeDivider
-              {...this.props}
-              key="time-divider"
-              order={6}
-            />
-            <DurationDisplay
-              {...this.props}
-              key="duration-display"
-              order={7}
-            />
+            {!isLive 
+              ? <div className="video-react-control-time-display">
+                  <CurrentTimeDisplay
+                    {...this.props}
+                    key="current-time-display"
+                    order={5}
+                  />
+                  <TimeDivider
+                    {...this.props}
+                    key="time-divider"
+                    order={6}
+                  />
+                  <DurationDisplay
+                    {...this.props}
+                    key="duration-display"
+                    order={7}
+                  />
+                </div>
+              : <Live 
+                  {...this.props}
+                  key="live-indicator"
+                  order={8}
+                />
+            }
           </div>
           <div className="video-react-control-right">
+            {children}
             <FullscreenToggle
               {...this.props}
               key="fullscreen-toggle"

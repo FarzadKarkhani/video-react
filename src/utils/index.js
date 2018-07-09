@@ -134,5 +134,5 @@ export const mediaProperties = [
   'volume', 'muted', 'defaultMuted',
   'audioTracks', 'videoTracks', 'textTracks',
   'width', 'height', 'videoWidth', 'videoHeight',
-  'poster'
+  'poster', 'isLive'
 ];

@@ -25,7 +25,6 @@ export default class AudioOnly extends Component {
     } else {
       video.src = videoUrl;
     }
-    // console.log(this.props)
     video.load();
     video.play();
   }

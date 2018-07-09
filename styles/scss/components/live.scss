@@ -1,0 +1,37 @@
+.video-react .video-react-live-control {
+  cursor: pointer;
+  @include flex(none);
+  width: 5em;
+}
+
+.video-react .video-react-live-label {
+	@include display-flex(center, center);
+	height: 18px;
+  font-size: 10px;
+  border-radius: 4px;
+  color: #fff;
+  direction: rtl;
+  font-weight: 700;
+  opacity: 0.85;
+  
+  &:hover {
+    opacity: 1;
+  }
+	
+	&:before {
+		content: '';
+		display: block;
+		height: 6px;
+		width: 6px;
+		margin-left: 6px;
+	  border-radius: 3px;
+	  background-color: #df254d;
+	  animation: blinking 1500ms infinite;
+	}
+}
+
+@keyframes blinking {
+  0% { background-color: #df254d; }
+  50% { background-color: transparent; }
+  100% { background-color: #df254d; }
+}

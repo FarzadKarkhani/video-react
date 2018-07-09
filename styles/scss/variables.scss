@@ -9,8 +9,6 @@ $video-react-primary-background-transparency: 0.7 !default;
 $video-react-secondary-background-color: lighten($video-react-primary-background-color, 33%) !default;
 $video-react-secondary-background-transparency: 0.5 !default;
 
-@font-face {font-family: IRANSansNumber;font-style: normal;font-weight: 400;src: url('https://assets.lahzenegar.com/web/fonts/eot/IRANSansWeb(FaNum).eot');src: url('https://assets.lahzenegar.com/web/fonts/eot/IRANSansWeb(FaNum).eot?#iefix') format('embedded-opentype'),url('https://assets.lahzenegar.com/web/fonts/woff2/IRANSansWeb(FaNum).woff2') format('woff2'),url('https://assets.lahzenegar.com/web/fonts/woff/IRANSansWeb(FaNum).woff') format('woff'),url('https://assets.lahzenegar.com/web/fonts/ttf/IRANSansWeb(FaNum).ttf') format('truetype');}
-
 $video-react-text-font-family: 'IRANSansNumber', tahoma !default;
 
 $video-react-big-play-button-width: 2em !default;

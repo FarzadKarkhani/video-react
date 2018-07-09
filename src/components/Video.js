@@ -284,7 +284,7 @@ export default class Video extends Component {
   handleDurationChange(...args) {
     const { actions, onDurationChange } = this.props;
     actions.handleDurationChange(this.getProperties());
-
+    
     if (onDurationChange) {
       onDurationChange(...args);
     }

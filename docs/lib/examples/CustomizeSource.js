@@ -8,7 +8,7 @@ export default (props) => {
   // Please use this url if you test it from local:
   // http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8
   return (
-    <Player>
+    <Player isLive={true}>
       <HLSSource
         isVideoChild
         src="https://vod0.lahzecdn.com/hls/1530950233hQmFn3ef84ce82cb1d4bc7e32bb19a0e86176/master.m3u8"

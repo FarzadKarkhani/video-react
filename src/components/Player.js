@@ -23,6 +23,7 @@ const propTypes = {
   height: PropTypes.number,
   fluid: PropTypes.bool,
   muted: PropTypes.bool,
+  isLive: PropTypes.bool,
   playsInline: PropTypes.bool,
   aspectRatio: PropTypes.string,
   className: PropTypes.string,
@@ -64,6 +65,7 @@ const propTypes = {
 const defaultProps = {
   fluid: true,
   muted: false,
+  isLive: false,
   playsInline: false,
   aspectRatio: 'auto',
 };

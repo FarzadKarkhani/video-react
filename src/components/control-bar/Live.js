@@ -15,9 +15,11 @@ export default class Live extends Component {
   }
 
   handleClick() {
-    const { actions, player: { seekable } } = this.props;
-    actions.seek(seekable.end(0));
-    actions.handleEndSeeking(seekable.end(0));
+    const { actions, player: { seekable, currentTime } } = this.props;
+    if (seekable && seekable.length && ( seekable.end(0) - currentTime >= 30 )) {
+      actions.seek(seekable.end(0));
+      actions.handleEndSeeking(seekable.end(0));
+    }
   }
 
   render() {

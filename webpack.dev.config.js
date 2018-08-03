@@ -79,9 +79,12 @@ const config = [{
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loaders: [
-          'babel-loader?cacheDirectory',
-        ],
+
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true,
+          presets: ['es2015','stage-0', 'react'],
+        },
       },
       {
         test: /\.css$/,

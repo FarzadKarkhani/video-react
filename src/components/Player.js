@@ -9,6 +9,7 @@ import LoadingSpinner from './LoadingSpinner';
 import PosterImage from './PosterImage';
 import Video from './Video';
 import Bezel from './Bezel';
+import HLSSource from './hls/HLSSource';
 import Shortcut from './Shortcut';
 import ControlBar from './control-bar/ControlBar';
 
@@ -110,7 +111,21 @@ export default class Player extends Component {
     }
   }
 
+  // TODO: separate hls utils
+  isHls(src) {
+    const hlsSuffix = /\.m3u8$/;
+    if(hlsSuffix.test(src)) return true;
+    
+    return false;
+  }
+
   getDefaultChildren(props, fullProps) {
+    let hlsSrc, isHls = false;
+    if(fullProps.children && fullProps.children.props) {
+      hlsSrc = fullProps.children.props.src;
+      isHls = this.isHls(hlsSrc);
+    }
+
     return [
       <Video
         ref={(c) => {
@@ -119,8 +134,15 @@ export default class Player extends Component {
         }}
         key="video"
         order={0.0}
-        {...fullProps}
-      />,
+        {...fullProps}>
+        {(!browser.IS_IOS && isHls) &&
+          <HLSSource
+            isVideoChild
+            src={hlsSrc}
+            {...props} />
+        }
+      </Video>
+      ,
       <PosterImage
         key="poster-image"
         order={1.0}

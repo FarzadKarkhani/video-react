@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// import Hls from 'hls.js';
 import '!script-loader!hls.js/dist/hls.light.min.js'; // eslint-disable-line import/no-webpack-loader-syntax
 
 class HLSSource extends Component {
@@ -8,13 +9,10 @@ class HLSSource extends Component {
 
     this.hls = new Hls(this.props.hlsOptions);
     this.levelLabels = ['low', 'medium', 'high'];
-    this.dvrThreshold = this.props.dvrThreshold || 300;
 
     this.onMediaAttached = this.onMediaAttached.bind(this);
     this.onManifestParsed = this.onManifestParsed.bind(this);
     this.onHlsError = this.onHlsError.bind(this);
-    this.onFragParsingMetadata = this.onFragParsingMetadata.bind(this);
-    this.onFragChanged = this.onFragChanged.bind(this);
     this.onLevelLoaded = this.onLevelLoaded.bind(this);
   }
 
@@ -25,11 +23,9 @@ class HLSSource extends Component {
       this.hls.attachMedia(video);
       // hls events
       this.hls.on(Hls.Events.MEDIA_ATTACHED, this.onMediaAttached);
-      // this.hls.on(Hls.Events.MANIFEST_PARSED, this.onManifestParsed);
-      // this.hls.on(Hls.Events.ERROR, this.onHlsError);
-      // this.hls.on(Hls.Events.FRAG_PARSING_METADATA, this.onFragParsingMetadata);
-      // this.hls.on(Hls.Events.FRAG_CHANGED, this.onFragChanged);
-      // this.hls.on(Hls.Events.LEVEL_LOADED, this.onLevelLoaded);
+      this.hls.on(Hls.Events.MANIFEST_PARSED, this.onManifestParsed);
+      this.hls.on(Hls.Events.ERROR, this.onHlsError);
+      this.hls.on(Hls.Events.LEVEL_LOADED, this.onLevelLoaded);
     }
   }
 
@@ -38,8 +34,8 @@ class HLSSource extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.activeLevel !== nextProps.activeLevel) {
-      this.hls.nextLevel = nextProps.activeLevel;
+    if (this.props.player.activeTrack !== nextProps.player.activeTrack) {
+      this.hls.nextLevel = nextProps.player.activeTrack;
     }
   }
 
@@ -51,40 +47,40 @@ class HLSSource extends Component {
   onManifestParsed(e, data) {
     const {
       video,
-      hlsEvents: { onManifestParsed },
       autoPlay,
+      actions
     } = this.props;
-
+    
     this.hls.startLoad();
     if (autoPlay) video.play();
-    onManifestParsed();
+    actions.handleManifestParsed(this.hls);
     this.buildTrackList(data.levels);
   }
 
-  onRequestGoLive() {
-    const duration = this.player.duration;
-    const targetDuration = this.hls.levels[this.hls.currentLevel].details.targetduration;
-    const liveSync = this.hls.config.liveSyncDurationCount;
-    const liveOffset = targetDuration * liveSync;
-
-    const liveTime = duration - liveOffset;
-
-    this.player.currentTime = liveTime;
-  }
-
   onLevelLoaded(e, data) {
-    const { onMediaStatus } = this.props;
-    const live = data.details.live;
+    const { actions,
+        dvrThreshold,
+        player: { duration, currentTime, hls } 
+      } = this.props;
+
+    const isLive = data.details.live || false;
     let hasDVR = false;
+    let latency = 0;
     const mediaDuration = data.details.totalduration;
 
-    if (live && mediaDuration > this.dvrThreshold) {
+    if (isLive && mediaDuration > dvrThreshold) {
       hasDVR = true;
     }
-    onMediaStatus(
-      hasDVR,
-      live,
-    );
+
+    if(isLive && hls.levels[hls.currentLevel]) {
+      const targetDuration = hls.levels[hls.currentLevel].details.targetduration;
+      const liveSync = hls.config.liveSyncDurationCount;
+      const liveOffset = targetDuration * liveSync;
+      const liveTime = duration - liveOffset;
+      latency = liveTime - currentTime;
+    }
+
+    actions.handleMediaStateChange(hasDVR, isLive, latency);
   }
 
   onHlsError(e, data) {
@@ -107,28 +103,16 @@ class HLSSource extends Component {
     }
   }
 
-  onFragParsingMetadata(e, data) {
-    const { hlsEvents: { onFragParsingMetadata } } = this.props;
-
-    onFragParsingMetadata(e, data);
-  }
-
-  onFragChanged(e, data) {
-    const { hlsEvents: { onFragChanged } } = this.props;
-
-    onFragChanged(e, data);
-  }
-
   buildTrackList(levels) {
     const trackList = [];
-    let activeLevel = this.props.activeLevel;
+    let { player: activeTrack, actions } = this.props;
 
     if (levels.length > 1) {
       const autoLevel = {
         id: -1,
         label: 'اتوماتیک',
       };
-      if (this.hls.manualLevel === -1) activeLevel = -1;
+      if (this.hls.manualLevel === -1) activeTrack = -1;
       trackList.push(autoLevel);
     }
 
@@ -138,9 +122,10 @@ class HLSSource extends Component {
       quality.id = index;
       quality.label = this._levelLabel(level, index);
       trackList.push(quality);
-      if (index === this.hls.manualLevel) activeLevel = index;
+      if (index === this.hls.manualLevel) activeTrack = index;
     });
-    this.props.onLoadLevels(activeLevel, trackList);
+
+    actions.handleLoadLevels(trackList);
   }
 
   _levelLabel(level, index) {
@@ -168,22 +153,11 @@ HLSSource.propTypes = {
   video: PropTypes.object,
   autoPlay: PropTypes.bool,
   hlsOptions: PropTypes.object,
-  hlsEvents: PropTypes.object,
-  onLoadLevels: PropTypes.func,
-  onMediaStatus: PropTypes.func,
   onError: PropTypes.func,
-  activeLevel: PropTypes.number,
 };
 HLSSource.defaultProps = {
-  activeLevel: -1,
-  hlsOptions: {},
+  hlsOptions: { liveSyncDurationCount: 0, debug: false },
   type: 'application/x-mpegURL',
-  hlsEvents: {
-    onMediaAttached: () => {},
-    onManifestParsed: () => {},
-    onFragChanged: () => {},
-    onFragParsingMetadata: () => {},
-  },
 };
 
 export default HLSSource;

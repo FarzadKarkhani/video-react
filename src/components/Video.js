@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import HLSSource from './hls/HLSSource';
 
-import { isVideoChild, mediaProperties, throttle } from '../utils';
+import * as browser from '../utils/browser';
+import { isVideoChild, mediaProperties, throttle, isHls } from '../utils';
 
 const propTypes = {
   actions: PropTypes.object,
@@ -509,10 +511,20 @@ export default class Video extends Component {
         } else {
           cprops = props;
         }
-        return React.cloneElement(
-          c,
-          cprops
-        );
+
+        if(isHls(cprops.src) && !browser.IS_IOS) {
+          return <HLSSource
+                    key={2}
+                    onError={this.handleError}
+                    src={cprops.src}
+                    {...props}
+                  />
+        } else {
+          return React.cloneElement(
+            c,
+            cprops
+          );
+        }
       });
   }
 

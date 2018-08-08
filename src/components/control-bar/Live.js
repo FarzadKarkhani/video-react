@@ -15,15 +15,17 @@ export default class Live extends Component {
   }
 
   handleClick() {
-    const { actions, player: { seekable, currentTime } } = this.props;
-    if (seekable && seekable.length && ( seekable.end(0) - currentTime >= 30 )) {
+    const { actions, player: { latency, seekable } } = this.props;
+
+    if (seekable && seekable.length && ( latency >= 10 )) {
       actions.seek(seekable.end(0));
       actions.handleEndSeeking(seekable.end(0));
+      actions.play();
     }
   }
 
   render() {
-    const { player, className } = this.props;
+    const { className, player: { latency } } = this.props;
     const controlText = 'Live';
     const labelText = 'زنده';
 
@@ -43,7 +45,10 @@ export default class Live extends Component {
           tabIndex="0"
           onClick={this.handleClick}
         >
-        <div className="video-react-live-label">{labelText}</div>
+        <div className={classNames(className, {
+            'video-react-live-label': true,
+            'video-react-onair-label': (latency <= 10),
+          })}>{labelText}</div>
         <span className="video-react-control-text">
           {controlText}
         </span>

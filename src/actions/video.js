@@ -23,6 +23,10 @@ export const LOADED_META_DATA = 'video-react/LOADED_META_DATA';
 export const LOADED_DATA = 'video-react/LOADED_DATA';
 export const RESIZE = 'video-react/RESIZE';
 export const ERROR = 'video-react/ERROR';
+export const MEDIA_STATE_CHANGE = 'video-react/MEDIA_STATE_CHANGE';
+export const LOADED_LEVELS = 'video-react/LOADED_LEVELS';
+export const TRACK_CHANGE = 'video-react/TRACK_CHANGE';
+export const MANIFEST_PARSED = 'video-react/MANIFEST_PARSED';
 
 export function handleLoadStart(videoProps) {
   return {
@@ -182,6 +186,36 @@ export function handleError(videoProps) {
   return {
     type: ERROR,
     videoProps,
+  };
+}
+
+export function handleMediaStateChange(hasDVR, isLive, latency) {
+  return {
+    type: MEDIA_STATE_CHANGE,
+    hasDVR,
+    isLive,
+    latency,
+  };
+}
+
+export function handleLoadLevels(tracks) {
+  return {
+    type: LOADED_LEVELS,
+    tracks,
+  };
+}
+
+export function handleManifestParsed(hls) {
+  return {
+    type: MANIFEST_PARSED,
+    hls,
+  };
+}
+
+export function handleTrackChange(activeTrack) {
+  return {
+    type: TRACK_CHANGE,
+    activeTrack,
   };
 }
 

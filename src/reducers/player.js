@@ -6,7 +6,8 @@ import {
   TIME_UPDATE, VOLUME_CHANGE, PROGRESS_CHANGE,
   RATE_CHANGE, SUSPEND, ABORT, EMPTIED,
   STALLED, LOADED_META_DATA, LOADED_DATA,
-  RESIZE, ERROR
+  RESIZE, ERROR, MEDIA_STATE_CHANGE, LOADED_LEVELS,
+  TRACK_CHANGE,MANIFEST_PARSED
 } from '../actions/video';
 import { FULLSCREEN_CHANGE, PLAYER_ACTIVATE, USER_ACTIVATE } from '../actions/player';
 
@@ -24,6 +25,11 @@ const initialState = {
   playbackRate: 1,
   muted: false,
   volume: 1,
+  isLive: false,
+  hasDVR: false,
+  latency: 0,
+  activeTrack: -1,
+  tracks: [],
   readyState: 0,
   networkState: 0,
   videoWidth: 0,
@@ -32,6 +38,7 @@ const initialState = {
   userActivity: true,
   isActive: false,
   isFullscreen: false,
+  hls: null,
 };
 
 export function player(state = initialState, action) {
@@ -127,6 +134,28 @@ export function player(state = initialState, action) {
         ...action.videoProps,
         error: 'UNKNOWN ERROR',
         ended: true
+      };
+    case MEDIA_STATE_CHANGE:
+      return {
+        ...state,
+        hasDVR: action.hasDVR,
+        isLive: action.isLive,
+        latency: action.latency,
+      };
+    case LOADED_LEVELS:
+      return {
+        ...state,
+        tracks: action.tracks
+      };
+    case MANIFEST_PARSED:
+      return {
+        ...state,
+        hls: action.hls
+      };
+    case TRACK_CHANGE:
+      return {
+        ...state,
+        activeTrack: action.activeTrack
       };
     case DURATION_CHANGE:
     case TIME_UPDATE:

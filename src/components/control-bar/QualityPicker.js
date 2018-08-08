@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MenuButton from '@lahzenegar/video-react/lib/components/menu/MenuButton';
+import MenuButton from '../menu/MenuButton';
 
 class QualityPicker extends Component {
-  constructor() {
-    super(...arguments);
+  constructor(props, context) {
+    super(props, context);
 
     this.handleSelectItem = this.handleSelectItem.bind(this);
   }
 
   handleSelectItem(index) {
-    this.props.onSetTrack(index - 1);
+    const { tracks, actions } = this.props;
+    if (index >= -1 && index < tracks.length) {
+      actions.handleTrackChange(index - 1);
+    }
   }
 
   render() {

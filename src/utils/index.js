@@ -69,6 +69,14 @@ const isTypeEqual = (component1, component2) => {
   return false;
 }
 
+// is hls source?
+export function isHls(src) {
+  const hlsSuffix = /\.m3u8$/;
+  if(hlsSuffix.test(src)) return true;
+  
+  return false;
+}
+  
 // merge default children
 // sort them by `order` property
 // filter them by `disabled` property
@@ -134,5 +142,5 @@ export const mediaProperties = [
   'volume', 'muted', 'defaultMuted',
   'audioTracks', 'videoTracks', 'textTracks',
   'width', 'height', 'videoWidth', 'videoHeight',
-  'poster', 'isLive'
+  'poster'
 ];

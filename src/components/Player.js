@@ -9,7 +9,6 @@ import LoadingSpinner from './LoadingSpinner';
 import PosterImage from './PosterImage';
 import Video from './Video';
 import Bezel from './Bezel';
-import HLSSource from './hls/HLSSource';
 import Shortcut from './Shortcut';
 import ControlBar from './control-bar/ControlBar';
 
@@ -24,13 +23,13 @@ const propTypes = {
   height: PropTypes.number,
   fluid: PropTypes.bool,
   muted: PropTypes.bool,
-  isLive: PropTypes.bool,
   playsInline: PropTypes.bool,
   aspectRatio: PropTypes.string,
   className: PropTypes.string,
   videoId: PropTypes.string,
 
   startTime: PropTypes.number,
+  dvrThreshold: PropTypes.number,
   loop: PropTypes.bool,
   autoPlay: PropTypes.bool,
   src: PropTypes.string,
@@ -64,9 +63,9 @@ const propTypes = {
 };
 
 const defaultProps = {
+  dvrThreshold: 300,
   fluid: true,
   muted: false,
-  isLive: false,
   playsInline: false,
   aspectRatio: 'auto',
 };
@@ -111,21 +110,7 @@ export default class Player extends Component {
     }
   }
 
-  // TODO: separate hls utils
-  isHls(src) {
-    const hlsSuffix = /\.m3u8$/;
-    if(hlsSuffix.test(src)) return true;
-    
-    return false;
-  }
-
   getDefaultChildren(props, fullProps) {
-    let hlsSrc, isHls = false;
-    if(fullProps.children && fullProps.children.props) {
-      hlsSrc = fullProps.children.props.src;
-      isHls = this.isHls(hlsSrc);
-    }
-
     return [
       <Video
         ref={(c) => {
@@ -134,14 +119,7 @@ export default class Player extends Component {
         }}
         key="video"
         order={0.0}
-        {...fullProps}>
-        {(!browser.IS_IOS && isHls) &&
-          <HLSSource
-            isVideoChild
-            src={hlsSrc}
-            {...props} />
-        }
-      </Video>
+        {...fullProps} />
       ,
       <PosterImage
         key="poster-image"
@@ -380,7 +358,12 @@ export default class Player extends Component {
   render() {
     const { fluid } = this.props;
     const { player } = this.manager.getState();
-    const { paused, hasStarted, waiting, seeking, isFullscreen, userActivity } = player;
+    const { paused,
+      hasStarted,
+      waiting,
+      seeking,
+      isFullscreen,
+      userActivity } = player;
 
     const props = {
       ...this.props,

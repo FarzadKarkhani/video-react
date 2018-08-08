@@ -6,6 +6,7 @@ import ProgressControl from './ProgressControl';
 import PlayToggle from './PlayToggle';
 import AudioOnly from './AudioOnly';
 import Live from './Live';
+import QualityPicker from './QualityPicker';
 import ForwardControl from './ForwardControl';
 import ReplayControl from './ReplayControl';
 import FullscreenToggle from './FullscreenToggle';
@@ -38,7 +39,7 @@ export default class ControlBar extends Component {
   }
 
   render() {
-    const { autoHide, className, isLive } = this.props;
+    const { autoHide, className, player: { isLive, tracks, activeTrack } } = this.props;
     const children = this.getChildren();
 
     return (
@@ -95,6 +96,14 @@ export default class ControlBar extends Component {
           </div>
           <div className="video-react-control-right">
             {children}
+            {(tracks && tracks.length > 1) &&
+              <QualityPicker
+                {...this.props}
+                activeTrack={activeTrack}
+                tracks={tracks}
+                order={11}
+              />
+            }
             <FullscreenToggle
               {...this.props}
               key="fullscreen-toggle"

@@ -14,21 +14,28 @@
   direction: rtl;
   font-weight: 700;
   opacity: 0.85;
+
+  &:before {
+    content: '';
+    display: block;
+    height: 6px;
+    width: 6px;
+    margin-left: 6px;
+    border-radius: 3px;
+    background-color: #b3b3b3;
+  }
+}
+.video-react .video-react-live-label.video-react-onair-label {
+  opacity: 0.85;
   
   &:hover {
     opacity: 1;
   }
-	
-	&:before {
-		content: '';
-		display: block;
-		height: 6px;
-		width: 6px;
-		margin-left: 6px;
-	  border-radius: 3px;
-	  background-color: #df254d;
-	  animation: blinking 1500ms infinite;
-	}
+  
+  &:before {
+    background-color: #df254d;
+    animation: blinking 1500ms infinite;
+  }
 }
 
 @keyframes blinking {

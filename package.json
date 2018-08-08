@@ -1,6 +1,6 @@
 {
   "name": "@lahzenegar/video-react",
-  "version": "0.13.4",
+  "version": "0.14.4",
   "description": "Video-React is a web video player built from the ground up for an HTML5 world using React library.",
   "main": "lib/index.js",
   "style": "dist/video-react.css",
@@ -61,7 +61,6 @@
   "tonicExampleFilename": "tonic-example.js",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "babel-runtime": "^6.26.0",
     "classnames": "^2.2.3",
     "hls.js": "^0.10.1",
     "lodash.throttle": "^4.1.1",

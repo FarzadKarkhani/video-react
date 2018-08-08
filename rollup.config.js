@@ -26,11 +26,7 @@ function baseConfig() {
         include: 'node_modules/**',
       }),
       babel({
-        exclude: 'node_modules/babel-runtime/**',
-        // include: [
-        //   'node_modules/hls.js/dist/hls.light.min.js'
-        // ],
-        plugins: ['external-helpers','transform-object-rest-spread', 'transform-runtime'],
+        plugins: ['external-helpers','transform-object-rest-spread'],
         runtimeHelpers: true,
       }),
     ],

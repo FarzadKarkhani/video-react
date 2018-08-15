@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Hls from 'hls.js/dist/hls.light.min.js';
+// import '!script-loader!hls.js/dist/hls.light.min.js'; 
 
 class HLSSource extends Component {
   constructor() {
@@ -13,6 +14,7 @@ class HLSSource extends Component {
     this.onManifestParsed = this.onManifestParsed.bind(this);
     this.onHlsError = this.onHlsError.bind(this);
     this.onLevelLoaded = this.onLevelLoaded.bind(this);
+    this.onLevelSwitched = this.onLevelSwitched.bind(this);
   }
 
   componentDidMount() {
@@ -25,6 +27,8 @@ class HLSSource extends Component {
       this.hls.on(Hls.Events.MANIFEST_PARSED, this.onManifestParsed);
       this.hls.on(Hls.Events.ERROR, this.onHlsError);
       this.hls.on(Hls.Events.LEVEL_LOADED, this.onLevelLoaded);
+      // this.hls.on(Hls.Events.LEVEL_SWITCHED, this.onLevelSwitched);
+      // this.hls.on(Hls.Events.LEVEL_SWITCHING, this.onLevelSwitched);
     }
   }
 
@@ -82,24 +86,39 @@ class HLSSource extends Component {
     actions.handleMediaStateChange(hasDVR, isLive, latency);
   }
 
+  onLevelSwitched(e, data) {
+    // console.log(data);
+  }
+
   onHlsError(e, data) {
     const { onError } = this.props;
+    let recoverDecodingErrorDate, recoverSwapAudioCodecDate;
     if (data.fatal) {
       switch (data.type) {
-        case Hls.ErrorTypes.NETWORK_ERROR:
-        // try to recover network error
-          this.hls.startLoad();
-          break;
         case Hls.ErrorTypes.MEDIA_ERROR:
-          this.hls.recoverMediaError();
+          const now = new Date().getTime();
+          if (!recoverDecodingErrorDate || (now - recoverDecodingErrorDate) > 3000) {
+            recoverDecodingErrorDate = new Date().getTime();
+            this.hls.recoverMediaError();
+          } else if(!recoverSwapAudioCodecDate || (now - recoverSwapAudioCodecDate) > 3000) {
+            recoverSwapAudioCodecDate = new Date().getTime();
+            console.warn('Attempting to swap audio codec and recover from media error');
+            this.hls.swapAudioCodec();
+            this.hls.recoverMediaError();
+          } else {
+            console.error('Cannot recover, last media error recovery failed');
+          }
+          break;
+        case Hls.ErrorTypes.NETWORK_ERROR:
+          this.hls.startLoad();
+          console.error('Network error');
           break;
         default:
-        // cannot recover
           this.hls.destroy();
           break;
       }
-      onError(e, data);
     }
+    onError(e, data);
   }
 
   buildTrackList(levels) {

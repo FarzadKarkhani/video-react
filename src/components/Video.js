@@ -428,8 +428,19 @@ export default class Video extends Component {
   // Fires when the current
   // playback position has changed
   handleTimeUpdate(...args) {
-    const { actions, onTimeUpdate } = this.props;
+    const { actions, onTimeUpdate, player: { currentTime, duration, hls, isLive } } = this.props;
     actions.handleTimeUpdate(this.getProperties());
+
+    if(isLive && hls && hls.levels[hls.currentLevel]) {
+      const targetDuration = hls.levels[hls.currentLevel].details.targetduration;
+      const liveSync = hls.config.liveSyncDurationCount;
+      const liveOffset = targetDuration * liveSync;
+      const liveTime = duration - liveOffset;
+      const latency = liveTime - currentTime;
+      actions.handleMediaLatencyChange(liveTime, latency);
+    }
+
+
 
     if (onTimeUpdate) {
       onTimeUpdate(...args);

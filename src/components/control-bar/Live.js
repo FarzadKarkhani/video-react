@@ -15,11 +15,11 @@ export default class Live extends Component {
   }
 
   handleClick() {
-    const { actions, player: { latency, seekable } } = this.props;
+    const { actions, player: { latency, liveTime } } = this.props;
 
-    if (seekable && seekable.length && ( latency >= 10 )) {
-      actions.seek(seekable.end(0));
-      actions.handleEndSeeking(seekable.end(0));
+    if (liveTime && ( latency >= 20 )) {
+      actions.seek(liveTime);
+      actions.handleEndSeeking(liveTime);
       actions.play();
     }
   }
@@ -47,7 +47,7 @@ export default class Live extends Component {
         >
         <div className={classNames(className, {
             'video-react-live-label': true,
-            'video-react-onair-label': (latency <= 10),
+            'video-react-onair-label': (latency <= 20),
           })}>{labelText}</div>
         <span className="video-react-control-text">
           {controlText}

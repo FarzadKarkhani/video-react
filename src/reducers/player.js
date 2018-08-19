@@ -7,7 +7,7 @@ import {
   RATE_CHANGE, SUSPEND, ABORT, EMPTIED,
   STALLED, LOADED_META_DATA, LOADED_DATA,
   RESIZE, ERROR, MEDIA_STATE_CHANGE, LOADED_LEVELS,
-  TRACK_CHANGE,MANIFEST_PARSED
+  TRACK_CHANGE, MANIFEST_PARSED, MEDIA_LATENCY_CHANGE
 } from '../actions/video';
 import { FULLSCREEN_CHANGE, PLAYER_ACTIVATE, USER_ACTIVATE } from '../actions/player';
 
@@ -27,6 +27,7 @@ const initialState = {
   volume: 1,
   isLive: false,
   hasDVR: false,
+  liveTime: 0,
   latency: 0,
   activeTrack: -1,
   tracks: [],
@@ -140,6 +141,11 @@ export function player(state = initialState, action) {
         ...state,
         hasDVR: action.hasDVR,
         isLive: action.isLive,
+      };
+    case MEDIA_LATENCY_CHANGE:
+      return {
+        ...state,
+        liveTime: action.liveTime,
         latency: action.latency,
       };
     case LOADED_LEVELS:

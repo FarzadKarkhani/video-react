@@ -15,6 +15,7 @@ class HLSSource extends Component {
     this.onHlsError = this.onHlsError.bind(this);
     this.onLevelLoaded = this.onLevelLoaded.bind(this);
     this.onLevelSwitched = this.onLevelSwitched.bind(this);
+    this.onLevelSwitching = this.onLevelSwitching.bind(this);
   }
 
   componentDidMount() {
@@ -27,8 +28,8 @@ class HLSSource extends Component {
       this.hls.on(Hls.Events.MANIFEST_PARSED, this.onManifestParsed);
       this.hls.on(Hls.Events.ERROR, this.onHlsError);
       this.hls.on(Hls.Events.LEVEL_LOADED, this.onLevelLoaded);
-      // this.hls.on(Hls.Events.LEVEL_SWITCHED, this.onLevelSwitched);
-      // this.hls.on(Hls.Events.LEVEL_SWITCHING, this.onLevelSwitched);
+      this.hls.on(Hls.Events.LEVEL_SWITCHED, this.onLevelSwitched);
+      this.hls.on(Hls.Events.LEVEL_SWITCHING, this.onLevelSwitching);
     }
   }
 
@@ -63,30 +64,34 @@ class HLSSource extends Component {
   onLevelLoaded(e, data) {
     const { actions,
         dvrThreshold,
-        player: { duration, currentTime, hls } 
+        player: { currentTime, duration, hls }
       } = this.props;
 
     const isLive = data.details.live || false;
     let hasDVR = false;
-    let latency = 0;
     const mediaDuration = data.details.totalduration;
 
     if (isLive && mediaDuration > dvrThreshold) {
       hasDVR = true;
     }
 
-    if(isLive && hls.levels[hls.currentLevel]) {
+    if(isLive && hls && hls.levels[hls.currentLevel]) {
       const targetDuration = hls.levels[hls.currentLevel].details.targetduration;
       const liveSync = hls.config.liveSyncDurationCount;
       const liveOffset = targetDuration * liveSync;
       const liveTime = duration - liveOffset;
-      latency = liveTime - currentTime;
+      const latency = liveTime - currentTime;
+      actions.handleMediaLatencyChange(liveTime, latency);
     }
 
-    actions.handleMediaStateChange(hasDVR, isLive, latency);
+    actions.handleMediaStateChange(hasDVR, isLive);
   }
 
   onLevelSwitched(e, data) {
+    // console.log(data);
+  }
+
+  onLevelSwitching(e, data) {
     // console.log(data);
   }
 
@@ -102,16 +107,12 @@ class HLSSource extends Component {
             this.hls.recoverMediaError();
           } else if(!recoverSwapAudioCodecDate || (now - recoverSwapAudioCodecDate) > 3000) {
             recoverSwapAudioCodecDate = new Date().getTime();
-            console.warn('Attempting to swap audio codec and recover from media error');
             this.hls.swapAudioCodec();
             this.hls.recoverMediaError();
-          } else {
-            console.error('Cannot recover, last media error recovery failed');
           }
           break;
         case Hls.ErrorTypes.NETWORK_ERROR:
           this.hls.startLoad();
-          console.error('Network error');
           break;
         default:
           this.hls.destroy();
@@ -174,7 +175,7 @@ HLSSource.propTypes = {
   onError: PropTypes.func,
 };
 HLSSource.defaultProps = {
-  hlsOptions: { liveSyncDurationCount: 2, debug: false },
+  hlsOptions: { liveSyncDurationCount: 3, debug: false },
   type: 'application/x-mpegURL',
 };
 

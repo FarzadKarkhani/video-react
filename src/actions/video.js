@@ -24,6 +24,7 @@ export const LOADED_DATA = 'video-react/LOADED_DATA';
 export const RESIZE = 'video-react/RESIZE';
 export const ERROR = 'video-react/ERROR';
 export const MEDIA_STATE_CHANGE = 'video-react/MEDIA_STATE_CHANGE';
+export const MEDIA_LATENCY_CHANGE = 'video-react/MEDIA_LATENCY_CHANGE';
 export const LOADED_LEVELS = 'video-react/LOADED_LEVELS';
 export const TRACK_CHANGE = 'video-react/TRACK_CHANGE';
 export const MANIFEST_PARSED = 'video-react/MANIFEST_PARSED';
@@ -189,11 +190,18 @@ export function handleError(videoProps) {
   };
 }
 
-export function handleMediaStateChange(hasDVR, isLive, latency) {
+export function handleMediaStateChange(hasDVR, isLive) {
   return {
     type: MEDIA_STATE_CHANGE,
     hasDVR,
     isLive,
+  };
+}
+
+export function handleMediaLatencyChange(liveTime, latency) {
+  return {
+    type: MEDIA_LATENCY_CHANGE,
+    liveTime,
     latency,
   };
 }

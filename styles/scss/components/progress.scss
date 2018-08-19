@@ -28,8 +28,7 @@
 
 // Also show the current time tooltip
 .video-react .video-react-progress-control:hover .video-react-time-tooltip,
-.video-react .video-react-progress-control:hover .video-react-mouse-display:after,
-.video-react .video-react-progress-control:hover .video-react-play-progress:after {
+.video-react .video-react-progress-control:hover .video-react-mouse-display:after{
   visibility: visible;
   font-size: 0.6em;
 }
@@ -77,8 +76,7 @@
 // Current Time "tooltip"
 // By default this is hidden and only shown when hovering over the progress control
 .video-react .video-react-time-tooltip,
-.video-react .video-react-mouse-display:after,
-.video-react .video-react-play-progress:after {
+.video-react .video-react-mouse-display:after {
   visibility: hidden;
   font-family: $video-react-text-font-family;
   pointer-events: none;
@@ -96,8 +94,7 @@
 }
 
 .video-react .video-react-time-tooltip,
-.video-react .video-react-play-progress:before,
-.video-react .video-react-play-progress:after {
+.video-react .video-react-play-progress:before {
   z-index: 1;
 }
 

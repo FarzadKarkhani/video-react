@@ -174,7 +174,7 @@ HLSSource.propTypes = {
   onError: PropTypes.func,
 };
 HLSSource.defaultProps = {
-  hlsOptions: { liveSyncDurationCount: 0, debug: false },
+  hlsOptions: { liveSyncDurationCount: 2, debug: false },
   type: 'application/x-mpegURL',
 };
 

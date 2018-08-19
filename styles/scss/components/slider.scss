@@ -4,6 +4,13 @@
   cursor: pointer;
   padding: 0;
   margin: 0 0.45em 0 0.45em;
+	
+	-khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 
   @include background-color-with-alpha($video-react-secondary-background-color, $video-react-secondary-background-transparency);
 }

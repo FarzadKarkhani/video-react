@@ -1,0 +1,15 @@
+.video-react .video-react-settings-control {
+  cursor: pointer;
+  @include flex(none);
+  @extend .video-react-icon;
+  @extend .video-react-icon-settings;
+}
+.video-react-active-track-label {
+	font-family: tahoma;
+  position: absolute;
+  bottom: 8px;
+  left: 4px;
+  font-size: 6px;
+  background-color: #df254d;
+  padding: 1px 2px;
+}

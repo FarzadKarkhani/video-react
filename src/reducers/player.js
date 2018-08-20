@@ -7,7 +7,7 @@ import {
   RATE_CHANGE, SUSPEND, ABORT, EMPTIED,
   STALLED, LOADED_META_DATA, LOADED_DATA,
   RESIZE, ERROR, MEDIA_STATE_CHANGE, LOADED_LEVELS,
-  TRACK_CHANGE, MANIFEST_PARSED, MEDIA_LATENCY_CHANGE
+  TRACK_CHANGE, REAL_TRACK_CHANGE, MANIFEST_PARSED, MEDIA_LATENCY_CHANGE
 } from '../actions/video';
 import { FULLSCREEN_CHANGE, PLAYER_ACTIVATE, USER_ACTIVATE } from '../actions/player';
 
@@ -30,6 +30,8 @@ const initialState = {
   liveTime: 0,
   latency: 0,
   activeTrack: -1,
+  realActiveTrack: -1,
+  switchingTrack: false,
   tracks: [],
   readyState: 0,
   networkState: 0,
@@ -162,6 +164,12 @@ export function player(state = initialState, action) {
       return {
         ...state,
         activeTrack: action.activeTrack
+      };
+    case REAL_TRACK_CHANGE:
+      return {
+        ...state,
+        realActiveTrack: action.realActiveTrack,
+        switchingTrack: action.switchingTrack
       };
     case DURATION_CHANGE:
     case TIME_UPDATE:

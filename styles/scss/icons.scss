@@ -210,6 +210,10 @@ $icon-font-family: 'video-react';
   &:before {
     content: $video-react-icon-settings;
   }
+  &.video-react-icon-spin:before {
+    font-size: 2.15em;
+		animation: rotate 2s infinite linear;
+  }
 }
 .video-react-icon-share {
   &:before {
@@ -247,4 +251,12 @@ $icon-font-family: 'video-react';
   }
 }
 
+@keyframes rotate {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@-webkit-keyframes rotate {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
 

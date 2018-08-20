@@ -39,7 +39,7 @@ export default class ControlBar extends Component {
   }
 
   render() {
-    const { autoHide, className, player: { isLive, tracks, activeTrack } } = this.props;
+    const { autoHide, className, player: { isLive, tracks, switchingTrack, activeTrack, realActiveTrack } } = this.props;
     const children = this.getChildren();
 
     return (
@@ -100,6 +100,8 @@ export default class ControlBar extends Component {
               <QualityPicker
                 {...this.props}
                 activeTrack={activeTrack}
+                switchingTrack={switchingTrack}
+                realActiveTrack={realActiveTrack}
                 tracks={tracks}
                 order={11}
               />

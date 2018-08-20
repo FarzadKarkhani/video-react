@@ -27,6 +27,7 @@ export const MEDIA_STATE_CHANGE = 'video-react/MEDIA_STATE_CHANGE';
 export const MEDIA_LATENCY_CHANGE = 'video-react/MEDIA_LATENCY_CHANGE';
 export const LOADED_LEVELS = 'video-react/LOADED_LEVELS';
 export const TRACK_CHANGE = 'video-react/TRACK_CHANGE';
+export const REAL_TRACK_CHANGE = 'video-react/REAL_TRACK_CHANGE';
 export const MANIFEST_PARSED = 'video-react/MANIFEST_PARSED';
 
 export function handleLoadStart(videoProps) {
@@ -217,6 +218,14 @@ export function handleManifestParsed(hls) {
   return {
     type: MANIFEST_PARSED,
     hls,
+  };
+}
+
+export function handleRealTrackChange(realActiveTrack, switchingTrack) {
+  return {
+    type: REAL_TRACK_CHANGE,
+    realActiveTrack,
+    switchingTrack,
   };
 }
 

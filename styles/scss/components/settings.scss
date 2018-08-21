@@ -5,11 +5,12 @@
   @extend .video-react-icon-settings;
 }
 .video-react-active-track-label {
-	font-family: tahoma;
+  font-family: tahoma;
   position: absolute;
-  bottom: 8px;
-  left: 4px;
-  font-size: 6px;
+  bottom: 6px;
+  left: 0px;
+  font-weight: 700;
+  font-size: 7px;
   background-color: #df254d;
   padding: 1px 2px;
 }

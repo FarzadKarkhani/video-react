@@ -431,7 +431,9 @@ export default class Video extends Component {
     const { actions, onTimeUpdate, player: { currentTime, duration, hls, isLive } } = this.props;
     actions.handleTimeUpdate(this.getProperties());
 
-    if(isLive && hls && hls.levels[hls.currentLevel]) {
+    if(isLive && hls &&
+        hls.levels[hls.currentLevel] &&
+        hls.levels[hls.currentLevel].details) {
       const targetDuration = hls.levels[hls.currentLevel].details.targetduration;
       const liveSync = hls.config.liveSyncDurationCount;
       const liveOffset = targetDuration * liveSync;

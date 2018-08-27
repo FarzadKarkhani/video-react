@@ -75,7 +75,9 @@ class HLSSource extends Component {
       hasDVR = true;
     }
 
-    if (isLive && hls && hls.levels[hls.currentLevel]) {
+    if(isLive && hls &&
+        hls.levels[hls.currentLevel] &&
+        hls.levels[hls.currentLevel].details) {
       const targetDuration = hls.levels[hls.currentLevel].details.targetduration;
       const liveSync = hls.config.liveSyncDurationCount;
       const liveOffset = targetDuration * liveSync;

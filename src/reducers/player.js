@@ -42,6 +42,9 @@ const initialState = {
   isActive: false,
   isFullscreen: false,
   hls: null,
+  secondsPlayed: 0,
+  percentPlayed: 0,
+  delayToStartPlaying: 0
 };
 
 export function player(state = initialState, action) {
@@ -78,6 +81,7 @@ export function player(state = initialState, action) {
         hasStarted: false,
         ended: false,
       };
+    case CAN_PLAY_THROUGH:
     case CAN_PLAY:
       return {
         ...state,
@@ -90,12 +94,12 @@ export function player(state = initialState, action) {
         ...action.videoProps,
         waiting: true
       };
-    case CAN_PLAY_THROUGH:
     case PLAYING:
       return {
         ...state,
         ...action.videoProps,
-        waiting: false
+        waiting: false,
+        delayToStartPlaying: action.delayToStartPlaying
       };
     case PLAY:
       return {
@@ -171,8 +175,14 @@ export function player(state = initialState, action) {
         realActiveTrack: action.realActiveTrack,
         switchingTrack: action.switchingTrack
       };
-    case DURATION_CHANGE:
     case TIME_UPDATE:
+      return {
+        ...state,
+        ...action.videoProps,
+        secondsPlayed: action.secondsPlayed,
+        percentPlayed: action.percentPlayed
+      };
+    case DURATION_CHANGE:
     case VOLUME_CHANGE:
     case PROGRESS_CHANGE:
     case RATE_CHANGE:

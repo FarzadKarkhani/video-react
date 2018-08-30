@@ -55,6 +55,8 @@ export default class Video extends Component {
     super(props);
 
     this.video = null; // the html5 video
+    this.firstPlayed = null;
+    this.firstLoadstarted = null;
     this.play = this.play.bind(this);
     this.pause = this.pause.bind(this);
     this.seek = this.seek.bind(this);
@@ -222,6 +224,8 @@ export default class Video extends Component {
   handleLoadStart(...args) {
     const { actions, onLoadStart } = this.props;
     actions.handleLoadStart(this.getProperties());
+
+    if(!this.firstLoadstarted) this.firstLoadstarted = Date.now();
     if (onLoadStart) {
       onLoadStart(...args);
     }
@@ -254,7 +258,13 @@ export default class Video extends Component {
   // signal that waiting has ended
   handlePlaying(...args) {
     const { actions, onPlaying } = this.props;
-    actions.handlePlaying(this.getProperties());
+
+    // Calculate exact delay to start playing
+    if(this.firstLoadstarted && !this.firstPlayed) {
+      this.firstPlayed = Date.now() - this.firstLoadstarted;
+    }
+    
+    actions.handlePlaying(this.getProperties(), this.firstPlayed);
 
     if (onPlaying) {
       onPlaying(...args);
@@ -429,7 +439,17 @@ export default class Video extends Component {
   // playback position has changed
   handleTimeUpdate(...args) {
     const { actions, onTimeUpdate, player: { currentTime, duration, hls, isLive } } = this.props;
-    actions.handleTimeUpdate(this.getProperties());
+
+    let timeRanges = this.video.played;
+    let secondsPlayed = 0, percentPlayed = 0;
+    if(duration && timeRanges) {
+      for (let i = 0; i < timeRanges.length; i++) {
+        secondsPlayed = secondsPlayed + (timeRanges.end(i) - timeRanges.start(i));
+      }
+      percentPlayed = (100 / duration) * secondsPlayed;
+    }
+
+    actions.handleTimeUpdate(this.getProperties(), secondsPlayed, percentPlayed);
 
     if(isLive && hls &&
         hls.levels[hls.currentLevel] &&
@@ -441,8 +461,6 @@ export default class Video extends Component {
       const latency = liveTime - currentTime;
       actions.handleMediaLatencyChange(liveTime, latency);
     }
-
-
 
     if (onTimeUpdate) {
       onTimeUpdate(...args);

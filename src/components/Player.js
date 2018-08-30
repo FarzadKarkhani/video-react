@@ -58,6 +58,7 @@ const propTypes = {
   onTimeUpdate: PropTypes.func,
   onRateChange: PropTypes.func,
   onVolumeChange: PropTypes.func,
+  onStatsChange: PropTypes.func,
 
   store: PropTypes.object
 };
@@ -76,6 +77,7 @@ export default class Player extends Component {
     super(props);
 
     this.controlsHideTimer = null;
+    this.statsUpdateInterval = null;
 
     this.video = null; // the Video component
     this.manager = new Manager(props.store);
@@ -96,6 +98,7 @@ export default class Player extends Component {
 
   componentDidMount() {
     this.handleResize();
+    this.handleStatsChange();
     window.addEventListener('resize', this.handleResize);
 
     fullscreen.addEventListener(this.handleFullScreenChange);
@@ -107,6 +110,9 @@ export default class Player extends Component {
     fullscreen.removeEventListener(this.handleFullScreenChange);
     if (this.controlsHideTimer) {
       window.clearTimeout(this.controlsHideTimer);
+    }
+    if (this.statsUpdateInterval) {
+      clearInterval(this.statsUpdateInterval);
     }
   }
 
@@ -353,6 +359,25 @@ export default class Player extends Component {
 
   handleBlur() {
     this.actions.activate(false);
+  }
+
+  handleStatsChange() {
+    const { onStatsChange } = this.props;
+
+    if (this.statsUpdateInterval) {
+      clearInterval(this.statsUpdateInterval);
+    }
+
+    this.statsUpdateInterval = setInterval(() => {
+      const { player: { secondsPlayed, percentPlayed, delayToStartPlaying, tracks, realActiveTrack } } = this.manager.getState();
+      const realActiveTrackLabel = tracks.filter(item => item.id === realActiveTrack)[0].label;
+      onStatsChange({ 
+        secondsPlayed: secondsPlayed, 
+        percentPlayed: percentPlayed,
+        delayToStartPlaying: delayToStartPlaying,
+        quality: realActiveTrackLabel
+      });
+    }, 10000);
   }
 
   render() {

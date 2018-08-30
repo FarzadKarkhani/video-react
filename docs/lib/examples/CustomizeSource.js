@@ -7,7 +7,7 @@ export default (props) => {
   // Please use this url if you test it from local:
   // http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8
   return (
-    <Player>
+    <Player onStatsChange={(a) => {console.log(a)}} autoPlay>
       <source src="http://www.streambox.fr/playlists/x36xhzz/x36xhzz.m3u8"/>
     </Player>
   );

@@ -58,10 +58,11 @@ export function handleCanPlayThrough(videoProps) {
   };
 }
 
-export function handlePlaying(videoProps) {
+export function handlePlaying(videoProps, delayToStartPlaying) {
   return {
     type: PLAYING,
-    videoProps
+    videoProps,
+    delayToStartPlaying
   };
 }
 
@@ -107,10 +108,12 @@ export function handleDurationChange(videoProps) {
   };
 }
 
-export function handleTimeUpdate(videoProps) {
+export function handleTimeUpdate(videoProps, secondsPlayed, percentPlayed) {
   return {
     type: TIME_UPDATE,
-    videoProps
+    videoProps,
+    secondsPlayed,
+    percentPlayed
   };
 }
 
